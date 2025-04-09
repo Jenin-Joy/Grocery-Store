@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Registration</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+        .container h2 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            background: #f1f1f1;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+        .input-group i {
+            margin-right: 10px;
+            color: #007bff;
+        }
+        .input-group input, .input-group select {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            font-size: 16px;
+            padding: 5px;
+        }
+        input::placeholder {
+            color: #888;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease-in-out;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Seller Registration</h2>
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" required pattern="^[A-Z]+[a-zA-Z ]*$" 
+                    title="First letter must be capital. Only alphabets and spaces allowed."
+                    name="txt_regname" placeholder="Full Name">
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" required name="txt_regemail" placeholder="Email">
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-phone"></i>
+                <input type="text" required pattern="[7-9]{1}[0-9]{9}" 
+                    title="Phone number must start with 7-9 and have 10 digits."
+                    name="txt_regcontact" placeholder="Contact Number">
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-map-marker-alt"></i>
+                <input type="text" required name="txt_regaddress" placeholder="Address">
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-city"></i>
+                <select name="district" required id="district">
+                    <option value="" disabled selected>Select District</option>
+                    {% for i in District %}
+                    <option value="{{i.id}}">{{ i.district_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-location-arrow"></i>
+                <select name="place" required id="place">
+                    <option value="">Select Place</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-image"></i>
+                <input type="file" required name="txt_logo">
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-id-card"></i>
+                <input type="file" required name="txt_proof">
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must contain at least one number, one uppercase, and one lowercase letter, and be at least 8 characters long."
+                    name="txt_password" placeholder="Password">
+            </div>
+
+            <input type="submit" name="btnsubmit" value="Register">
+        </form>
+    </div>
+
+    <script>
+        $("#district").change(function () {
+            var did = $(this).val();
+            var ur = "{% url 'Guest:ajaxplace' %}"
+            $.ajax({
+                url: ur,
+                data: { did: did },
+                success: function (data) {
+                    $("#place").html(data);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

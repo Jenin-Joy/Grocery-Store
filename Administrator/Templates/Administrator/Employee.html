@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+                <table border="1" align="center" cellpadding="5">
+                    <tr>
+                        <td><label for="department">Department</label></td>
+                        <td>
+                            <select name="department" id="department">
+                                <option value="" disabled selected>Select a Department</option>
+                                {% for i in Department %}
+                            
+                                <option {% if editemp.department.id == i.id %}
+                                Selected
+                                {% endif %} 
+                                value="{{ i.id }}">{{ i.department_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label for="designation">Designation</label></td>
+                        <td>
+                            <select name="designation" id="designation">
+                                <option value="" disabled selected>Select a Designation</option>
+                                {% for i in Designation %}
+                            
+                                <option {% if editemp.designation.id == i.id %}
+                                Selected
+                                {% endif %} 
+                                value="{{ i.id }}">{{ i.designation_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th><label for="txt_empname">Name:</label></th>
+                        <td><input type="text" name="txt_empname" id="txt_empname" value="{{editemp.employee_name}}"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="txt_empcontact">Contact:</label></th>
+                        <td><input type="text" name="txt_empcontact" id="txt_empcontact" value="{{editemp.employee_contact}}"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="txt_empemail">Email:</label></th>
+                        <td><input type="text" name="txt_empemail" id="txt_empemail" value="{{editemp.employee_email}}"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="txt_empaddress">Address:</label></th>
+                        <td><input type="text" name="txt_empaddress" id="txt_empaddress" value="{{editemp.employee_address}}"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="txt_empbs">Basic Salary:</label></th>
+                        <td><input type="text" name="txt_empbs" id="txt_empbs" value="{{editemp.employee_basicsalary}}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="btnsubmit" value="save">
+                            <input type="submit" name="btncancel" value="cancel">
+                          
+                    </tr>
+                    </table>
+                    </form>
+                    <table border="1" align="center" cellpadding="5">
+                        <tr>
+                            <td>id</td>
+                            <td>Department Name</td>
+                            <td>Designation Name</td>
+                            <td>Name</td>
+                            <td>contact</td>
+                            <td>email</td>
+                            <td>address</td>
+                            <td>basicsalary</td>
+                            <td>action</td>
+                            <td>action</td>
+                            
+                        </tr>
+                        {%for i in employeedata%}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{ i.department.department_name }}</td>
+                            <td>{{ i.designation.designation_name }}</td>
+                            <td>{{i.employee_name}}</td>
+                            <td>{{ i.employee_contact }}</td>
+                            <td>{{i.employee_email }}</td>
+                            <td>{{i.employee_address }}</td>
+                            <td>{{i.employee_basicsalary }}</td>
+                            <td><a href="{% url 'Admin:deleteemployee' i.id %}">delete</a></td>
+                            <td><a href="{% url 'Admin:editemployee' i.id %}">edit</a></td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+            
+</body>
+</html>

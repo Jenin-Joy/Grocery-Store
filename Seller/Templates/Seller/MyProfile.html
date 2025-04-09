@@ -1,0 +1,107 @@
+{% extends 'Seller/head.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .profile-section {
+        background: url('{% static "Main/images/banner-1.jpg" %}') no-repeat center center/cover;
+        padding: 50px 0;
+        position: relative;
+    }
+
+    .profile-overlay {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-card {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        text-align: center;
+        color: white;
+    }
+
+    .profile-card h3 {
+        font-weight: bold;
+        color: #FFD700;
+    }
+
+    .profile-img {
+        border: 3px solid #FFD700;
+        box-shadow: 0px 3px 8px rgba(255, 255, 255, 0.4);
+    }
+
+    .profile-table th {
+        background: rgba(255, 255, 255, 0.2);
+        color: #FFD700;
+        padding: 8px;
+    }
+
+    .profile-table td {
+        color: white;
+        padding: 8px;
+    }
+
+    .profile-btn {
+        border: none;
+        padding: 10px 20px;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: 0.3s;
+    }
+
+    .btn-edit {
+        background: #FFC107;
+        color: black;
+    }
+
+    .btn-edit:hover {
+        background: #FFA000;
+    }
+
+    .btn-password {
+        background: #DC3545;
+        color: white;
+    }
+
+    .btn-password:hover {
+        background: #C82333;
+    }
+</style>
+
+<section class="profile-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="profile-overlay">
+                    <div class="profile-card">
+                        <h3>My Profile</h3>
+                        <div class="mb-3">
+                            <img src="{{ seller.seller_logo.url }}" alt="Logo" class="rounded-circle profile-img" height="120" width="120">
+                        </div>
+                        
+                        <table class="table profile-table">
+                            <tr><th>Name:</th><td>{{ seller.seller_name }}</td></tr>
+                            <tr><th>Email:</th><td>{{ seller.seller_email }}</td></tr>
+                            <tr><th>Contact:</th><td>{{ seller.seller_contact }}</td></tr>
+                            <tr><th>Address:</th><td>{{ seller.seller_address }}</td></tr>
+                            <tr><th>District:</th><td>{{ seller.place.district.district_name }}</td></tr>
+                            <tr><th>Place:</th><td>{{ seller.place.place_name }}</td></tr>
+                        </table>
+                        <div class="mt-3">
+                            <a href="{% url 'Seller:editprofile' %}" class="btn profile-btn btn-edit me-2">Edit Profile</a>
+                            <a href="{% url 'Seller:changepassword' %}" class="btn profile-btn btn-password">Change Password</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

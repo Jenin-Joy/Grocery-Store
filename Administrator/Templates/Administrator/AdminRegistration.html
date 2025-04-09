@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="POST">
+{% csrf_token %}
+        <table border="1" align="center" cellpadding="5">
+            <tr>
+                <th><label for="txt_name">Name:</label></th>
+                <td><input type="text" required  title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$" name="txt_name" id="txt_name" value="{{editadmin.admin_name}}"></td>
+            </tr>
+            <tr>
+                <th><label for="txt_contact">contact:</label></th>
+                <td><input type="number" required  pattern="[7-9]{1}[0-9]{9}" 
+                    title="Phone number with 7-9 and remaing 9 digit with 0-9" name="txt_contact" id="txt_course" value="{{editadmin.admin_contact}}"></td>
+            </tr>
+            <tr>
+                <th><label for="txt_email">Email:</label></th>
+                <td><input type="email" required name="txt_email" id="txt_email" value="{{editadmin.admin_email}}"></td>
+            </tr>
+            <tr>
+                <th><label for="txt_password">Password:</label></th>
+                <td><input type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" name="txt_password" id="txt_password" value="{{editadmin.admin_password}}"></td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" name="btnsubmit" value="submit">
+                    <input type="submit" name="btncancel" value="cancel">
+                  
+            </tr>
+ 
+            
+        </table>
+    </form>
+        <table border="1" align="center" cellpadding="5">
+            <tr>
+                <td>id</td>
+                <td>name </td>
+                <td>contact</td>
+                <td>email</td>
+                <td>password</td>
+                <td>action</td>
+                <td>action</td>
+            </tr>
+            {%for i in admin%}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.admin_name}}</td>
+                <td>{{i.admin_contact}}</td>
+                <td>{{i.admin_email}}</td>
+                <td>{{i.admin_password}}</td>
+                <td><a href="{% url 'Admin:deleteadmin' i.id %}">delete</a></td>
+                <td><a href="{% url 'Admin:editadmin' i.id %}">edit</a></td>
+            </tr>
+            {%endfor%}
+        </table>
+
+</body>
+</html>

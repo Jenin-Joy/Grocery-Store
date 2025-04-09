@@ -1,0 +1,51 @@
+{% extends 'DeliveryAgent/head.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0 rounded-3 p-3">
+                <div class="text-center mb-3">
+                    <img src="{{ delivery.deliveryagent_photo.url }}" alt="Profile Photo" class="img-fluid" style="height: 120px; width: 120px; object-fit: cover; border-radius: 10px;">
+                </div>
+                
+                <table class="table table-borderless table-sm">
+                    <tbody>
+                        <tr>
+                            <th class="text-muted">Name</th>
+                            <td>{{ delivery.deliveryagent_name }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-muted">Email</th>
+                            <td>{{ delivery.deliveryagent_email }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-muted">Contact</th>
+                            <td>{{ delivery.deliveryagent_contact }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-muted">Address</th>
+                            <td>{{ delivery.deliveryagent_address }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-muted">District</th>
+                            <td>{{ delivery.place.district.district_name }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-muted">Place</th>
+                            <td>{{ delivery.place.place_name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="d-flex justify-content-between mt-3">
+                    <a href="{% url 'DeliveryAgent:editprofile' %}" class="btn btn-outline-primary w-100 me-1">Edit Profile</a>
+                    <a href="{% url 'DeliveryAgent:changepassword' %}" class="btn btn-outline-danger w-100 ms-1">Change Password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

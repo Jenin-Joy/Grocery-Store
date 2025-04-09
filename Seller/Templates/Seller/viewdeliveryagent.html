@@ -1,0 +1,62 @@
+{% extends 'Seller/head.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .agent-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px 0;
+    }
+
+    .agent-card {
+        width: 360px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .agent-card img {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-bottom: 15px;
+        border: 3px solid #007bff33;
+    }
+
+    .agent-card h3 {
+        margin: 0 0 10px;
+        font-size: 20px;
+        color: #333;
+    }
+
+    .agent-info p {
+        font-size: 14px;
+        margin: 6px 0;
+        color: #555;
+    }
+
+    .agent-info p strong {
+        color: #007bff;
+    }
+</style>
+
+<div class="agent-container">
+    <div class="agent-card">
+        <img src="{{ delivery.deliveryagent_photo.url }}" alt="Agent Photo">
+        <h3>{{ delivery.deliveryagent_name }}</h3>
+        <div class="agent-info">
+            <p><strong>Email:</strong> {{ delivery.deliveryagent_email }}</p>
+            <p><strong>Contact:</strong> {{ delivery.deliveryagent_contact }}</p>
+            <p><strong>District:</strong> {{ delivery.place.district.district_name }}</p>
+            <p><strong>Place:</strong> {{ delivery.place.place_name }}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

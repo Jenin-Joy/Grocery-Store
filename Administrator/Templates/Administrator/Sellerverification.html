@@ -1,0 +1,55 @@
+{% extends 'Administrator/head.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Seller List</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <th>Logo</th>
+                                    <th>Proof</th>
+                                    <th>Address</th>
+                                    <th>District</th>
+                                    <th>Place</th>
+                                    <th>Accept</th>
+                                    <th>Reject</th>
+                                </tr>
+                            </thead>
+                            <tbody class="border border-primary">
+                                {% for i in seller %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ i.seller_name }}</td>
+                                    <td>{{ i.seller_email }}</td>
+                                    <td>{{ i.seller_contact }}</td>
+                                    <td align="center"><img src="{{ i.seller_logo.url }}" alt="logo" height="100" width="100"></td>
+                                    <td align="center"><img src="{{ i.seller_proof.url }}" alt="proof" height="100" width="100"></td>
+                                    <td>{{ i.seller_address }}</td>
+                                    <td>{{ i.place.district.district_name }}</td>
+                                    <td>{{ i.place.place_name }}</td>
+                                    <td><a href="{% url 'Admin:acceptseller' i.id %}" class="btn btn-success btn-sm">Accept</a></td>
+                                    <td><a href="{% url 'Admin:rejectseller' i.id %}" class="btn btn-danger btn-sm">Reject</a></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

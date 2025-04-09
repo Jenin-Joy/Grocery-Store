@@ -1,0 +1,111 @@
+{% extends 'Seller/head.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">  <!-- Optional, if you have any CSS -->
+    <style>
+        /* Basic card styling */
+        .card {
+            background: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 600px;
+        }
+
+        .card h2 {
+            text-align: center;
+        }
+
+        .card form {
+            margin: 20px 0;
+        }
+
+        .card input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .card input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .card input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .card table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .card table, .card th, .card td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        .card th {
+            background-color: #f2f2f2;
+        }
+
+        .card td {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>Submit Feedback</h2>
+        
+        <form method="POST">
+            {% csrf_token %}
+            <label for="txt_content">Content:</label>
+            <input type="text" name="txt_content" id="txt_content" required placeholder="Enter feedback content">
+            <br>
+            <input type="submit" name="btnsubmit" value="Submit">
+            <input type="submit" name="btncancel" value="Cancel">
+        </form>
+        
+        <h3>Feedback List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Content</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in feedback %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ i.feedback_name }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="2">No feedback available</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+{% endblock %}

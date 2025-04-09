@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Sales Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .charts-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .chart-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 400px;
+            box-sizing: border-box;
+        }
+
+        .chart-card h2 {
+            font-size: 18px;
+            text-align: center;
+            color: #04142c;
+            margin-bottom: 15px;
+        }
+
+        .canvas-wrapper {
+            width: 100%;
+            height: 300px;
+            position: relative;
+        }
+
+        canvas {
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="charts-row">
+        <div class="chart-card">
+            <h2>Product Sales Distribution</h2>
+            <div class="canvas-wrapper">
+                <canvas id="salesPieChart"></canvas>
+            </div>
+        </div>
+
+        <div class="chart-card">
+            <h2>Monthly Sales Overview</h2>
+            <div class="canvas-wrapper">
+                <canvas id="salesBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var did = ''; // seller ID
+            var ur = "{% url 'Seller:pdtchart' %}";
+
+            $.ajax({
+                url: ur,
+                data: { did: did },
+                success: function (data) {
+                    // PIE CHART
+                    const pieCtx = document.getElementById('salesPieChart').getContext('2d');
+                    new Chart(pieCtx, {
+                        type: 'pie',
+                        data: {
+                            labels: data.pie.labels,
+                            datasets: [{
+                                data: data.pie.data,
+                                backgroundColor: ['#FF9999', '#66B2FF', '#99FF99', '#FFCC66', '#FF6666'],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'top' },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (tooltipItem) {
+                                            return tooltipItem.label + ': ' + tooltipItem.raw + ' sales';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    // BAR CHART
+                    const barCtx = document.getElementById('salesBarChart').getContext('2d');
+                    new Chart(barCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: data.bar.labels,
+                            datasets: data.bar.datasets
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { position: 'top' },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (tooltipItem) {
+                                            return tooltipItem.dataset.label + ': ₹' + tooltipItem.raw;
+                                        }
+                                    }
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error fetching data:", error);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

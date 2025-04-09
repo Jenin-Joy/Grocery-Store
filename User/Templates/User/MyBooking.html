@@ -1,0 +1,94 @@
+{% extends 'User/head.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    /* Modern heading */
+    h2 {
+        color: black;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+
+    /* Button styling */
+    .btn-color-change {
+        background: linear-gradient(90deg, #28a745, #20c997);
+        color: white;
+        border: none;
+        transition: background 0.3s ease, transform 0.2s ease;
+        border-radius: 20px;
+        padding: 8px 16px;
+    }
+    .btn-color-change:hover {
+        background: linear-gradient(90deg, #20c997, #28a745);
+        transform: scale(1.05);
+    }
+
+    /* Booking container */
+    .bookings-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    /* Square booking card */
+    .booking-card {
+        width: 220px;
+        height: 220px;
+        border-radius: 15px;
+        padding: 20px;
+        background: #fff;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .booking-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Booking details */
+    .booking-details p {
+        margin: 5px 0;
+        font-size: 16px;
+        color: #333;
+    }
+
+    /* Booking action */
+    .booking-action {
+        margin-top: auto;
+    }
+</style>
+
+<div class="container mt-5 text-center">
+    <h2>My Bookings</h2>
+
+    <div class="bookings-container">
+        {% if booking %}
+            {% for i in booking %}
+            <div class="booking-card">
+                <div class="booking-details">
+                    <p><strong>Date:</strong> {{ i.booking_date|date:"d M Y" }}</p>
+                    <p><strong>Amount:</strong> ₹{{ i.booking_amount }}</p>
+                </div>
+                <div class="booking-action">
+                    <a href="{% url 'User:viewcartproduct' i.id %}" class="btn btn-color-change btn-sm">
+                        View Products
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center text-danger fw-bold">No Bookings Found</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

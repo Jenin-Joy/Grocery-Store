@@ -1,0 +1,117 @@
+{% extends 'Seller/head.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    h2 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+
+    .complaint-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .complaint-box {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        width: 250px;
+        padding: 10px;
+        text-align: left;
+        transition: 0.3s ease;
+    }
+
+    .complaint-box:hover {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .complaint-title {
+        font-weight: 600;
+        font-size: 14px;
+        color: #dc3545;
+        margin-bottom: 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .complaint-info {
+        font-size: 13px;
+        margin-bottom: 5px;
+        color: #444;
+    }
+
+    .product-img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 4px;
+        margin-bottom: 6px;
+    }
+
+    .complaint-reply {
+        background: #f1f3f5;
+        font-size: 13px;
+        color: #333;
+        padding: 6px;
+        border-radius: 4px;
+        margin-top: 6px;
+    }
+
+    .action-btn {
+        display: block;
+        text-align: center;
+        background-color: #007bff;
+        color: white;
+        padding: 6px 0;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        margin-top: 8px;
+        transition: background-color 0.3s;
+    }
+
+    .action-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<h2>New Complaints</h2>
+<div class="complaint-grid">
+    {% for i in complaint %}
+    <div class="complaint-box">
+        <div class="complaint-title">{{ i.complaint_title }}</div>
+        <img src="{{ i.product.product_photo.url }}" class="product-img" alt="Product">
+        <div class="complaint-info"><strong>Product:</strong> {{ i.product.product_name }}</div>
+        <div class="complaint-info"><strong>User:</strong> {{ i.user.user_name }}</div>
+        <a href="{% url 'Seller:replynow' i.id %}" class="action-btn">Reply</a>
+    </div>
+    {% endfor %}
+</div>
+
+<h2>Solved Complaints</h2>
+<div class="complaint-grid">
+    {% for i in Solvedcomplaint %}
+    <div class="complaint-box">
+        <div class="complaint-title">{{ i.complaint_title }}</div>
+        <img src="{{ i.product.product_photo.url }}" class="product-img" alt="Product">
+        <div class="complaint-info"><strong>Product:</strong> {{ i.product.product_name }}</div>
+        <div class="complaint-info"><strong>User:</strong> {{ i.user.user_name }}</div>
+        <div class="complaint-reply"><strong>Reply:</strong> {{ i.complaint_reply }}</div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}

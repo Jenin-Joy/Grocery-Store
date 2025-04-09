@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+                <table border="1" align="center" cellpadding="5">
+                    
+                    <tr>
+                        <th><label for="txt_name">Name:</label></th>
+                        <td><input type="text" required  title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" pattern="^[A-Z]+[a-zA-Z ]*$"  name="txt_name" id="txt_name"  value="{{seller.seller_name}}"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="txt_email">Email:</label></th>
+                        <td><input type="text" required name="txt_email" id="txt_email" value="{{seller.seller_email}}"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="txt_contact">Contact:</label></th>
+                        <td><input type="text"  required  pattern="[7-9]{1}[0-9]{9}" 
+                            title="Phone number with 7-9 and remaing 9 digit with 0-9"  name="txt_contact" id="txt_contact" value="{{seller.seller_contact}}"></td>
+                    </tr>
+                    <tr>
+                        <th><label for="txt_address">Address:</label></th>
+                        <td><input type="text" required name="txt_address" id="txt_address" value="{{seller.seller_address}}"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="2" align="center">
+                            <input type="submit" name="btnsubmit" value="update">
+                        
+                          
+                    </tr>
+                    </table>
+                    </form>
+                   
+            
+</body>
+</html>

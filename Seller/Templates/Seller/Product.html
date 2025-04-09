@@ -1,0 +1,218 @@
+{% extends 'Seller/head.html' %}
+{% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add Product</title>
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-group label {
+            width: 120px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: #45a049;
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .product-card {
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 10px;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-bottom: 8px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+            margin: 8px 0;
+        }
+
+        .product-desc {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            color: #4CAF50;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .action-btn {
+            padding: 5px 10px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+
+        .add-stock-btn {
+            background: #2196F3;
+            color: white;
+        }
+
+        .add-stock-btn:hover {
+            background: #1976D2;
+        }
+
+        .delete-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="txt_name">Name:</label>
+                <input type="text" required 
+                       title="Name Allows Only Alphabets,Spaces and First Letter Must Be Capital Letter" 
+                       pattern="^[A-Z]+[a-zA-Z ]*$" 
+                       name="txt_name" 
+                       id="txt_name">
+            </div>
+
+            <div class="form-group">
+                <label for="txt_desc">Description:</label>
+                <input type="text" required name="txt_desc" id="txt_desc">
+            </div>
+
+            <div class="form-group">
+                <label for="txt_photo">Photo:</label>
+                <input type="file" required name="txt_photo" id="txt_photo">
+            </div>
+
+            <div class="form-group">
+                <label for="txt_price">Amount:</label>
+                <input type="number" required name="txt_price" id="txt_price">
+            </div>
+
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <select name="category" required id="category">
+                    <option value="" disabled selected>Select a Category</option>
+                    {% for i in category %}
+                    <option {% if editsub.category.id == i.id %}selected{% endif %} 
+                            value="{{ i.id }}">{{ i.category_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="subcategory">Subcategory:</label>
+                <select name="subcategory" required id="subcategory">
+                    <option></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Submit" class="submit-btn">
+            </div>
+        </form>
+    </div>
+
+    <div class="products-container">
+        {% for i in product %}
+        <div class="product-card">
+            <img src="{{i.product_photo.url}}" alt="{{i.product_name}}" class="product-image">
+            <div class="product-title">{{i.product_name}}</div>
+            <div class="product-desc">{{i.product_description}}</div>
+            <div class="product-price">₹{{i.product_price}}</div>
+            <div>Category: {{i.subcategory.category.category_name}}</div>
+            <div>Subcategory: {{i.subcategory.subcategory_name}}</div>
+            <div>
+                {% if i.total_stock <= 0 %}
+                <span class="text-danger fw-bold">Out Of Stock</span>
+                {% else  %}
+                <span class="text-danger fw-bold">Stock Remaining = {{i.total_stock}}</span>
+                {% endif %}
+            </div>
+            <div class="action-buttons">
+                <a href="{% url 'Seller:addstock' i.id %}" class="action-btn add-stock-btn">Add Stock</a>
+                <a href="{% url 'Seller:deleteproduct' i.id %}" class="action-btn delete-btn">Delete</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+{% endblock content %}

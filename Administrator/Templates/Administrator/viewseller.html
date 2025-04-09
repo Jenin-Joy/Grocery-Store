@@ -1,0 +1,115 @@
+{% extends 'Administrator/head.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <!-- Accepted Sellers Table -->
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Accepted Sellers</h4>
+                    <h6 class="card-subtitle">List of approved sellers.</h6>
+                    <div class="table-responsive">
+                        {% if aseller %}
+                        <table class="table table-hover table-striped">
+                            <thead class="bg-success text-white">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <th>Logo</th>
+                                    <th>Proof</th>
+                                    <th>Address</th>
+                                    <th>District</th>
+                                    <th>Place</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in aseller %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ i.seller_name }}</td>
+                                    <td>{{ i.seller_email }}</td>
+                                    <td>{{ i.seller_contact }}</td>
+                                    <td align="center">
+                                        <img src="{{ i.seller_logo.url }}" alt="logo" class="img-fluid rounded" style="height: 80px; width: auto;">
+                                    </td>
+                                    <td align="center">
+                                        <img src="{{ i.seller_proof.url }}" alt="proof" class="img-fluid rounded" style="height: 80px; width: auto;">
+                                    </td>
+                                    <td>{{ i.seller_address }}</td>
+                                    <td>{{ i.place.district.district_name }}</td>
+                                    <td>{{ i.place.place_name }}</td>
+                                    <td>
+                                        <a href="{% url 'Admin:rejectseller' i.id %}" class="btn btn-danger btn-sm">Reject</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <p class="text-center text-muted">No accepted sellers found.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rejected Sellers Table -->
+            <div class="card mt-4">
+                <div class="card-body">
+                    <h4 class="card-title">Rejected Sellers</h4>
+                    <h6 class="card-subtitle">List of rejected sellers.</h6>
+                    <div class="table-responsive">
+                        {% if rseller %}
+                        <table class="table table-hover table-striped">
+                            <thead class="bg-danger text-white">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <th>Logo</th>
+                                    <th>Proof</th>
+                                    <th>Address</th>
+                                    <th>District</th>
+                                    <th>Place</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in rseller %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ i.seller_name }}</td>
+                                    <td>{{ i.seller_email }}</td>
+                                    <td>{{ i.seller_contact }}</td>
+                                    <td align="center">
+                                        <img src="{{ i.seller_logo.url }}" alt="logo" class="img-fluid rounded" style="height: 80px; width: auto;">
+                                    </td>
+                                    <td align="center">
+                                        <img src="{{ i.seller_proof.url }}" alt="proof" class="img-fluid rounded" style="height: 80px; width: auto;">
+                                    </td>
+                                    <td>{{ i.seller_address }}</td>
+                                    <td>{{ i.place.district.district_name }}</td>
+                                    <td>{{ i.place.place_name }}</td>
+                                    <td>
+                                        <a href="{% url 'Admin:acceptseller' i.id %}" class="btn btn-success btn-sm">Accept</a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <p class="text-center text-muted">No rejected sellers found.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

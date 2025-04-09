@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="" method="POST">
+        {% csrf_token %}
+                <table border="1" align="center" cellpadding="5">
+                    <tr>
+                        <th><label for="txt_desname">Designation Name:</label></th>
+                        <td><input type="text" name="txt_desname" id="txt_desname" value="{{editdes.designation_name}}"></td>
+                    </tr>
+                    
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" name="btnsubmit" value="add">
+                            <input type="submit" name="btncancel" value="cancel">
+                          
+                    </tr>
+                    </table>
+                    </form>
+                    <table border="1" align="center" cellpadding="5">
+                        <tr>
+                            <td>id</td>
+                            <td>Designation Name</td>
+                            <td>action</td>
+                            <td>action</td>
+                            
+                        </tr>
+                        {%for i in designation%}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{i.designation_name}}</td>
+                            <td><a href="{% url 'Admin:deletedesignation' i.id %}">delete</a></td>
+                            <td><a href="{% url 'Admin:editdesignation' i.id %}">edit</a></td>
+                        </tr>
+                        {%endfor%}
+                    </table>
+            
+</body>
+</html>

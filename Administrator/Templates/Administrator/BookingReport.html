@@ -1,0 +1,75 @@
+{% extends 'Administrator/head.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container-fluid mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10"> <!-- Adjusted width for better layout -->
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Sales Report</h4>
+                    <h6 class="card-subtitle">View sales report based on selected date range.</h6>
+                    <form action="" method="POST" class="mb-4">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-5">
+                                <label for="txt_fromdate" class="form-label">From Date:</label>
+                                <input type="date" required name="txt_fromdate" id="txt_fromdate" class="form-control">
+                            </div>
+                            <div class="col-md-5">
+                                <label for="txt_todate" class="form-label">To Date:</label>
+                                <input type="date" required name="txt_todate" id="txt_todate" class="form-control">
+                            </div>
+                            <div class="col-md-2 d-flex align-items-end">
+                                <button type="submit" name="btnsubmit" class="btn btn-primary w-100">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% if request.POST %} <!-- Only show results after form submission -->
+                    <div class="table-responsive">
+                        {% if cart %}
+                        <table class="table table-hover table-striped w-100">
+                            <thead class="bg-primary text-white">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Address</th>
+                                    <th>Contact</th>
+                                    <th>Product Name</th>
+                                    <th>Photo</th>
+                                    <th>Amount</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for i in cart %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ i.booking.user.user_name }}</td>
+                                    <td>{{ i.booking.user.user_email }}</td>
+                                    <td>{{ i.booking.user.user_address }}</td>
+                                    <td>{{ i.booking.user.user_contact }}</td>
+                                    <td>{{ i.product.product_name }}</td>
+                                    
+                                    <td>{{ i.booking.booking_amount }}</td>
+                                    <td>{{ i.cart_qty }}</td>
+                                    <td align="center">
+                                        <img src="{{ i.product.product_photo.url }}" alt="product photo" class="img-fluid rounded" style="height: 80px; width: auto;">
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <p class="text-center text-muted">No data found.</p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
